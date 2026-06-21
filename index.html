@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سیستم‌های عامل نهفته و ماشین‌های مجازی</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&family=Roboto:wght@400;700&display=swap');
+
+:root {
+  --accent: #00c8ff;
+  --accent2: #7c4dff;
+  --dark: #0d1117;
+  --card: rgba(255,255,255,0.06);
+  --text: #e8eaf6;
+  --muted: #90a4ae;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  margin: 0;
+  font-family: 'Vazirmatn', 'Roboto', sans-serif;
+  background: var(--dark);
+  overflow: hidden;
+  color: var(--text);
+}
+
+/* ── اسلایدها ── */
+.slide {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0; left: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  padding: 50px 60px 80px;
+  box-sizing: border-box;
+}
+.slide.active { display: flex; flex-direction: column; opacity: 1; }
+
+/* ── اسلاید عنوان ── */
+.title-slide {
+  background: linear-gradient(135deg, #0d1117 0%, #1a1a3a 50%, #0d1a2e 100%);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.title-slide::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,200,255,0.12) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  border-radius: 50%;
+}
+.title-slide::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(124,77,255,0.12) 0%, transparent 70%);
+  bottom: -50px; left: -50px;
+  border-radius: 50%;
+}
+.title-slide .inner {
+  position: relative; z-index: 1;
+}
+.title-slide h1 {
+  font-size: 3em;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+.title-slide .subtitle {
+  font-size: 1.4em;
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+.title-slide .authors { font-size: 1.1em; color: #80cbc4; }
+.title-slide .source-tag {
+  margin-top: 16px;
+  display: inline-block;
+  padding: 6px 18px;
+  border: 1px solid rgba(0,200,255,0.4);
+  border-radius: 20px;
+  font-size: 0.9em;
+  color: var(--accent);
+}
+
+/* ── هدر اسلایدهای داخلی ── */
+.slide-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid rgba(0,200,255,0.25);
+  padding-bottom: 14px;
+}
+.slide-header .num {
+  font-size: 0.85em; font-weight: 700;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.slide-header h2 {
+  font-size: 2em;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ── بدنه متن ── */
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+/* ── متن مرکزی ── */
+.center-text {
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  height: 100%; gap: 20px;
+}
+.center-text p { font-size: 1.55em; line-height: 1.9; max-width: 850px; color: var(--text); }
+.center-text .quote {
+  font-size: 1.65em; font-style: italic;
+  color: var(--accent);
+  border-right: 4px solid var(--accent);
+  padding-right: 20px;
+  text-align: right;
+  max-width: 800px;
+}
+
+/* ── دو ستونه ── */
+.two-col {
+  display: flex; gap: 40px;
+  align-items: center; height: 100%;
+}
+.two-col .col-text { flex: 1; }
+.two-col .col-img { flex: 0 0 42%; }
+.two-col .col-img img {
+  width: 100%; border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  object-fit: cover;
+}
+.two-col .col-text h3 {
+  font-size: 1.35em; color: var(--accent);
+  margin-bottom: 12px; font-weight: 700;
+}
+.two-col .col-text p {
+  font-size: 1.2em; line-height: 1.8; color: var(--text);
+  margin-bottom: 14px;
+}
+.two-col .col-text ul {
+  list-style: none; padding: 0;
+}
+.two-col .col-text ul li {
+  font-size: 1.15em; line-height: 1.75;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.two-col .col-text ul li::before {
+  content: '▸'; color: var(--accent); flex-shrink: 0; margin-top: 2px;
+}
+
+/* ── کارت‌گرید ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  height: 100%;
+  align-content: center;
+}
+.cards-grid.cols2 { grid-template-columns: repeat(2, 1fr); }
+.card {
+  background: var(--card);
+  border: 1px solid rgba(0,200,255,0.15);
+  border-radius: 14px;
+  padding: 22px 20px;
+  transition: border-color 0.3s;
+}
+.card:hover { border-color: var(--accent); }
+.card .card-icon { font-size: 2em; margin-bottom: 10px; }
+.card h4 { font-size: 1.1em; color: var(--accent); margin-bottom: 8px; font-weight: 700; }
+.card p { font-size: 0.95em; line-height: 1.7; color: var(--muted); }
+
+/* ── جدول ── */
+.table-wrap {
+  display: flex; flex-direction: column;
+  align-items: center; height: 100%; justify-content: center;
+}
+table.comp-table {
+  width: 90%;
+  border-collapse: collapse;
+  font-size: 1.1em;
+}
+table.comp-table th {
+  background: rgba(0,200,255,0.15);
+  color: var(--accent);
+  padding: 14px 20px;
+  text-align: right;
+  font-weight: 700;
+  border: 1px solid rgba(0,200,255,0.2);
+}
+table.comp-table td {
+  padding: 12px 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  line-height: 1.6;
+  color: var(--text);
+}
+table.comp-table tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+
+/* ── SVG دیاگرام ── */
+.diagram-wrap {
+  display: flex; justify-content: center; align-items: center;
+  height: 100%;
+}
+.diagram-wrap svg { max-width: 100%; max-height: 75vh; }
+
+/* ── بارهای پیشرفت ── */
+.progress-bar {
+  position: fixed; bottom: 0; left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.5s ease;
+  z-index: 100;
+}
+
+/* ── ناوبری ── */
+.navigation {
+  position: fixed; bottom: 16px; width: 100%;
+  text-align: center; z-index: 99;
+}
+.nav-btn {
+  display: inline-block;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 8px 28px;
+  margin: 0 8px;
+  cursor: pointer;
+  border-radius: 30px;
+  user-select: none;
+  font-weight: 600;
+  font-size: 0.95em;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: background 0.3s;
+}
+.nav-btn:hover { background: rgba(0,200,255,0.2); border-color: var(--accent); }
+.slide-counter {
+  display: inline-block;
+  color: var(--muted);
+  font-size: 0.85em;
+  vertical-align: middle;
+  margin: 0 8px;
+}
+
+/* ── نشانگر تصویر (full-image slide) ── */
+.img-slide {
+  padding: 0;
+  overflow: hidden;
+}
+.img-slide img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  background: #050a10;
+}
+
+/* ── سبک‌های خاص ── */
+.highlight { color: var(--accent); font-weight: 700; }
+.chip {
+  display: inline-block;
+  background: rgba(0,200,255,0.12);
+  border: 1px solid rgba(0,200,255,0.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.85em;
+  color: var(--accent);
+  margin: 3px;
+}
+.summary-list {
+  list-style: none; padding: 0;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  max-width: 860px;
+}
+.summary-list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 1.1em; line-height: 1.7;
+}
+.summary-list li::before {
+  content: '✓';
+  color: #00e676;
+  font-weight: 700; flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۱ – عنوان
+═══════════════════════════════════════════════════ -->
+<div class="slide active title-slide">
+  <div class="inner">
+    <div style="font-size:3.5em; margin-bottom:10px;">🖥️</div>
+    <h1>سیستم‌های عامل نهفته<br>و ماشین‌های مجازی</h1>
+    <p class="subtitle">مبانی، معماری، و محیط‌های محاسباتی</p>
+    <p class="authors">مهدی فیضی/مجید حسینی</p>
+    <span class="source-tag">Operating System Concepts — Silberschatz, Galvin, Gagne — 10th Edition</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۲ – سیستم‌عامل چیست؟
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۲</div>
+    <h2>سیستم‌عامل چیست؟</h2>
+  </div>
+  <div class="slide-body center-text">
+    <p class="quote">«سیستم‌عامل نرم‌افزاری است که سخت‌افزار کامپیوتر را مدیریت می‌کند، بستری برای اجرای برنامه‌ها فراهم می‌آورد و میانجی بین کاربر و سخت‌افزار است.»</p>
+    <p>یک سیستم کامپیوتری از چهار بخش اصلی تشکیل می‌شود:<br>
+      <span class="chip">سخت‌افزار</span>
+      <span class="chip">سیستم‌عامل</span>
+      <span class="chip">برنامه‌های کاربردی</span>
+      <span class="chip">کاربر</span>
+    </p>
+    <p>سیستم‌عامل مانند یک دولت عمل می‌کند — به‌تنهایی کاری انجام نمی‌دهد، اما محیطی فراهم می‌کند که در آن سایر برنامه‌ها کار مفید انجام دهند.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۳ – سازمان‌دهی سیستم کامپیوتری
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۳</div>
+    <h2>سازمان‌دهی سیستم کامپیوتری</h2>
+  </div>
+  <div class="slide-body">
+    <div class="two-col">
+      <div class="col-text">
+        <h3>اجزای اصلی یک کامپیوتر مدرن</h3>
+        <ul>
+          <li>یک یا چند CPU و کنترلرهای دستگاه که از طریق باس مشترک به هم متصل‌اند</li>
+          <li><span class="highlight">وقفه (Interrupt)</span>: روش اصلی ارتباط سخت‌افزار با سیستم‌عامل — سخت‌افزار سیگنالی به CPU ارسال می‌کند</li>
+          <li><span class="highlight">DMA</span>: انتقال مستقیم بلوک‌های بزرگ داده به حافظه بدون دخالت CPU</li>
+          <li><span class="highlight">سلسله‌مراتب حافظه</span>: رجیسترها ← کش ← RAM ← NVM ← HDD</li>
+        </ul>
+        <p style="margin-top:14px; font-size:1em; color:var(--muted);">هر کنترلر دستگاه درایور مخصوص خود را دارد که رابطی یکنواخت به سیستم‌عامل ارائه می‌دهد.</p>
+      </div>
+      <div class="col-img">
+        <svg viewBox="0 0 340 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:rgba(255,255,255,0.03);border-radius:12px;padding:10px;">
+          <!-- Bus -->
+          <rect x="20" y="150" width="300" height="14" rx="4" fill="#00c8ff" opacity="0.7"/>
+          <text x="170" y="161" fill="#0d1117" font-size="10" text-anchor="middle" font-weight="bold">System Bus</text>
+          <!-- CPU -->
+          <rect x="30" y="70" width="70" height="50" rx="8" fill="rgba(0,200,255,0.2)" stroke="#00c8ff" stroke-width="1.5"/>
+          <text x="65" y="99" fill="#00c8ff" font-size="11" text-anchor="middle" font-weight="bold">CPU</text>
+          <!-- Memory -->
+          <rect x="135" y="70" width="70" height="50" rx="8" fill="rgba(124,77,255,0.2)" stroke="#7c4dff" stroke-width="1.5"/>
+          <text x="170" y="99" fill="#7c4dff" font-size="11" text-anchor="middle" font-weight="bold">Memory</text>
+          <!-- I/O Controller -->
+          <rect x="240" y="70" width="80" height="50" rx="8" fill="rgba(0,230,118,0.2)" stroke="#00e676" stroke-width="1.5"/>
+          <text x="280" y="94" fill="#00e676" font-size="10" text-anchor="middle" font-weight="bold">I/O</text>
+          <text x="280" y="108" fill="#00e676" font-size="10" text-anchor="middle">Controller</text>
+          <!-- Lines to bus -->
+          <line x1="65" y1="120" x2="65" y2="150" stroke="#00c8ff" stroke-width="2"/>
+          <line x1="170" y1="120" x2="170" y2="150" stroke="#7c4dff" stroke-width="2"/>
+          <line x1="280" y1="120" x2="280" y2="150" stroke="#00e676" stroke-width="2"/>
+          <!-- Devices -->
+          <rect x="30" y="195" width="60" height="36" rx="6" fill="rgba(255,171,64,0.15)" stroke="#ffab40" stroke-width="1"/>
+          <text x="60" y="217" fill="#ffab40" font-size="9" text-anchor="middle">Disk Drive</text>
+          <rect x="135" y="195" width="70" height="36" rx="6" fill="rgba(255,171,64,0.15)" stroke="#ffab40" stroke-width="1"/>
+          <text x="170" y="217" fill="#ffab40" font-size="9" text-anchor="middle">USB Devices</text>
+          <rect x="240" y="195" width="80" height="36" rx="6" fill="rgba(255,171,64,0.15)" stroke="#ffab40" stroke-width="1"/>
+          <text x="280" y="217" fill="#ffab40" font-size="9" text-anchor="middle">Display/Sound</text>
+          <!-- Lines from bus to devices -->
+          <line x1="60" y1="164" x2="60" y2="195" stroke="#ffab40" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="170" y1="164" x2="170" y2="195" stroke="#ffab40" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="280" y1="164" x2="280" y2="195" stroke="#ffab40" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <!-- Interrupt arrow -->
+          <path d="M 240 85 C 200 50 110 50 80 85" stroke="#ff5252" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+          <text x="160" y="44" fill="#ff5252" font-size="9" text-anchor="middle">Interrupt Signal</text>
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#ff5252"/>
+            </marker>
+          </defs>
+          <!-- Cache label inside CPU -->
+          <rect x="32" y="246" width="60" height="25" rx="4" fill="rgba(0,200,255,0.08)" stroke="rgba(0,200,255,0.3)" stroke-width="1"/>
+          <text x="62" y="262" fill="#90a4ae" font-size="8" text-anchor="middle">Cache L1/L2</text>
+          <line x1="62" y1="231" x2="62" y2="246" stroke="rgba(0,200,255,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="62" y="300" fill="#546e7a" font-size="8" text-anchor="middle">HDD / NVM</text>
+          <rect x="32" y="282" width="60" height="22" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <text x="62" y="297" fill="#546e7a" font-size="8" text-anchor="middle">Secondary</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۴ – معماری سیستم
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۴</div>
+    <h2>معماری سیستم کامپیوتری</h2>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🖥️</div>
+        <h4>سیستم تک‌پردازنده</h4>
+        <p>یک CPU با هسته واحد. کامپیوترهای قدیمی. پردازنده‌های خاص‌منظوره (دیسک، کیبورد) جداگانه وجود دارند ولی سیستم را چندپردازنده نمی‌کنند.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h4>سیستم‌های چندپردازنده (SMP)</h4>
+        <p>دو یا چند CPU که حافظه، باس و دستگاه‌های جانبی را به اشتراک می‌گذارند. <span class="highlight">توان عملیاتی</span> بیشتر. اکثر سیستم‌های مدرن.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔀</div>
+        <h4>سیستم‌های چندهسته‌ای</h4>
+        <p>چندین هسته محاسباتی روی یک تراشه. ارتباط درون‌تراشه‌ای سریع‌تر. مصرف برق کمتر — مناسب موبایل و لپ‌تاپ.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧩</div>
+        <h4>NUMA</h4>
+        <p>هر CPU حافظه محلی دارد. مقیاس‌پذیری بهتر با افزایش پردازنده. تأخیر بیشتر در دسترسی به حافظه دور.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <h4>سیستم‌های خوشه‌ای</h4>
+        <p>چند سیستم مستقل از طریق LAN/InfiniBand به هم متصل‌اند. دسترس‌پذیری بالا، تحمل خطا (Fault Tolerance).</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔴</div>
+        <h4>Blade Servers</h4>
+        <p>تخته‌های پردازنده در یک شاسی مشترک. هر برد مستقلاً بوت می‌شود. مرز بین خوشه و چندپردازنده محو می‌شود.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۵ – مد کاربری و هسته
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۵</div>
+    <h2>عملیات سیستم‌عامل: مد کاربری و هسته</h2>
+  </div>
+  <div class="slide-body">
+    <div class="two-col">
+      <div class="col-text">
+        <h3>دو مد اجرایی</h3>
+        <ul>
+          <li>بیت Mode توسط سخت‌افزار تعیین می‌شود: <span class="highlight">0 = Kernel Mode</span> و <span class="highlight">1 = User Mode</span></li>
+          <li>دستورات ممتاز (Privileged) فقط در Kernel Mode اجرا می‌شوند (مانند کنترل I/O، تایمر)</li>
+          <li>System Call: روش درخواست کاربر از سیستم‌عامل — تبدیل User Mode به Kernel Mode</li>
+          <li>مدهای بیشتر: Intel دارای ۴ سطح حفاظت (Ring 0–3)؛ ARMv8 دارای ۷ مد است</li>
+          <li>مد VMM: در پردازنده‌های پشتیبان از مجازی‌سازی، یک مد جداگانه برای Virtual Machine Manager</li>
+        </ul>
+        <p style="margin-top:14px; font-size:1em; color:var(--muted);">چندبرنامگی (Multiprogramming) و چندوظیفگی (Multitasking) اساس مدیریت CPU در سیستم‌های مدرن‌اند.</p>
+      </div>
+      <div class="col-img">
+        <svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:rgba(255,255,255,0.03);border-radius:12px;padding:10px;">
+          <!-- User space -->
+          <rect x="20" y="20" width="280" height="80" rx="10" fill="rgba(124,77,255,0.15)" stroke="#7c4dff" stroke-width="1.5"/>
+          <text x="160" y="50" fill="#7c4dff" font-size="13" text-anchor="middle" font-weight="bold">User Mode (mode bit = 1)</text>
+          <rect x="40" y="60" width="70" height="25" rx="5" fill="rgba(124,77,255,0.2)" stroke="#7c4dff" stroke-width="1"/>
+          <text x="75" y="77" fill="#e8eaf6" font-size="9" text-anchor="middle">Process A</text>
+          <rect x="125" y="60" width="70" height="25" rx="5" fill="rgba(124,77,255,0.2)" stroke="#7c4dff" stroke-width="1"/>
+          <text x="160" y="77" fill="#e8eaf6" font-size="9" text-anchor="middle">Process B</text>
+          <rect x="210" y="60" width="70" height="25" rx="5" fill="rgba(124,77,255,0.2)" stroke="#7c4dff" stroke-width="1"/>
+          <text x="245" y="77" fill="#e8eaf6" font-size="9" text-anchor="middle">Process C</text>
+          <!-- Kernel space -->
+          <rect x="20" y="190" width="280" height="85" rx="10" fill="rgba(0,200,255,0.12)" stroke="#00c8ff" stroke-width="1.5"/>
+          <text x="160" y="218" fill="#00c8ff" font-size="13" text-anchor="middle" font-weight="bold">Kernel Mode (mode bit = 0)</text>
+          <text x="160" y="240" fill="#90a4ae" font-size="10" text-anchor="middle">Scheduler / Memory Manager / Device Drivers</text>
+          <text x="160" y="260" fill="#90a4ae" font-size="10" text-anchor="middle">Interrupt Handler / System Call Handler</text>
+          <!-- Arrows -->
+          <path d="M 110 100 L 110 130 L 160 130 L 160 190" stroke="#ff5252" stroke-width="2" fill="none" marker-end="url(#rarr)"/>
+          <text x="180" y="145" fill="#ff5252" font-size="9">System Call (trap)</text>
+          <path d="M 210 190 L 210 130 L 250 130 L 250 100" stroke="#00e676" stroke-width="2" fill="none" marker-end="url(#garr)"/>
+          <text x="215" y="170" fill="#00e676" font-size="9">Return</text>
+          <defs>
+            <marker id="rarr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+            </marker>
+            <marker id="garr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#00e676"/>
+            </marker>
+          </defs>
+          <!-- Hardware -->
+          <rect x="20" y="285" width="280" height="12" rx="4" fill="rgba(255,171,64,0.3)" stroke="#ffab40" stroke-width="1"/>
+          <text x="160" y="295" fill="#ffab40" font-size="9" text-anchor="middle">Hardware (CPU / Memory / Devices)</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۶ – سیستم‌های نهفته: مقدمه
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۶</div>
+    <h2>سیستم‌های نهفته (Embedded Systems)</h2>
+  </div>
+  <div class="slide-body center-text">
+    <p class="quote">«سیستم‌های نهفته رایج‌ترین نوع کامپیوتر در جهان هستند.»</p>
+    <p>این سیستم‌ها در همه‌جا یافت می‌شوند: از موتورهای خودرو و ربات‌های صنعتی تا درایوهای نوری و مایکروویو. معمولاً وظایف بسیار خاص دارند.</p>
+    <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-top:10px;">
+      <span class="chip">🚗 خودرو</span>
+      <span class="chip">🏥 تجهیزات پزشکی</span>
+      <span class="chip">📱 گوشی هوشمند</span>
+      <span class="chip">🏠 خانه هوشمند</span>
+      <span class="chip">✈️ هوانوردی</span>
+      <span class="chip">🔬 کنترل صنعتی</span>
+      <span class="chip">📡 اینترنت اشیاء</span>
+      <span class="chip">🎮 کنسول بازی</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۷ – سیستم‌های بلادرنگ (RTOS)
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۷</div>
+    <h2>سیستم‌های عامل بلادرنگ (Real-Time OS)</h2>
+  </div>
+  <div class="slide-body">
+    <div class="two-col">
+      <div class="col-text">
+        <h3>تعریف</h3>
+        <p>سیستم بلادرنگ زمانی استفاده می‌شود که محدودیت‌های زمانی سخت‌گیرانه‌ای روی عملکرد پردازنده یا جریان داده وضع شده باشد.</p>
+        <ul>
+          <li><span class="highlight">Hard Real-Time:</span> پاسخ باید دقیقاً در زمان مقرر ارائه شود — تأخیر = شکست سیستم</li>
+          <li><span class="highlight">Soft Real-Time:</span> پاسخ سریع مطلوب است اما تأخیر کمی قابل تحمل است</li>
+          <li>سنسورها داده را می‌آورند؛ کامپیوتر تحلیل کرده و کنترل‌ها را تنظیم می‌کند</li>
+          <li>مثال: بازوی رباتیک باید دقیقاً به موقع متوقف شود — تأخیر می‌تواند فاجعه‌بار باشد</li>
+        </ul>
+      </div>
+      <div class="col-img">
+        <svg viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:rgba(255,255,255,0.03);border-radius:12px;padding:12px;">
+          <!-- Timeline -->
+          <line x1="30" y1="140" x2="290" y2="140" stroke="#546e7a" stroke-width="1.5"/>
+          <!-- Time marks -->
+          <line x1="80" y1="135" x2="80" y2="145" stroke="#546e7a" stroke-width="1"/>
+          <line x1="170" y1="135" x2="170" y2="145" stroke="#546e7a" stroke-width="1"/>
+          <line x1="260" y1="135" x2="260" y2="145" stroke="#546e7a" stroke-width="1"/>
+          <text x="80" y="158" fill="#90a4ae" font-size="9" text-anchor="middle">t₁</text>
+          <text x="170" y="158" fill="#90a4ae" font-size="9" text-anchor="middle">t₂ (deadline)</text>
+          <text x="260" y="158" fill="#90a4ae" font-size="9" text-anchor="middle">t₃</text>
+          <!-- Event -->
+          <circle cx="80" cy="140" r="7" fill="#ffab40"/>
+          <text x="80" y="120" fill="#ffab40" font-size="9" text-anchor="middle">Event</text>
+          <!-- Hard RT response (on time) -->
+          <rect x="82" y="65" width="85" height="30" rx="5" fill="rgba(0,230,118,0.2)" stroke="#00e676" stroke-width="1.5"/>
+          <text x="124" y="84" fill="#00e676" font-size="9" text-anchor="middle">Process &amp; Respond</text>
+          <line x1="87" y1="80" x2="87" y2="140" stroke="#00e676" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <path d="M160 80 L170 140" stroke="#00e676" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="124" y="57" fill="#00e676" font-size="10" text-anchor="middle" font-weight="bold">✓ Hard Real-Time</text>
+          <!-- Soft RT response (slightly late) -->
+          <rect x="172" y="65" width="80" height="30" rx="5" fill="rgba(255,171,64,0.2)" stroke="#ffab40" stroke-width="1.5"/>
+          <text x="212" y="84" fill="#ffab40" font-size="9" text-anchor="middle">Late Response</text>
+          <path d="M172 80 L172 140" stroke="#ffab40" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="212" y="57" fill="#ffab40" font-size="10" text-anchor="middle" font-weight="bold">~ Soft Real-Time</text>
+          <!-- Sensor flow -->
+          <rect x="30" y="185" width="70" height="28" rx="5" fill="rgba(0,200,255,0.1)" stroke="#00c8ff" stroke-width="1"/>
+          <text x="65" y="203" fill="#00c8ff" font-size="9" text-anchor="middle">Sensor Input</text>
+          <path d="M100 199 L130 199" stroke="#00c8ff" stroke-width="1.5" marker-end="url(#barr)"/>
+          <rect x="130" y="185" width="60" height="28" rx="5" fill="rgba(124,77,255,0.1)" stroke="#7c4dff" stroke-width="1"/>
+          <text x="160" y="203" fill="#7c4dff" font-size="9" text-anchor="middle">RTOS</text>
+          <path d="M190 199 L220 199" stroke="#7c4dff" stroke-width="1.5" marker-end="url(#barr)"/>
+          <rect x="220" y="185" width="70" height="28" rx="5" fill="rgba(0,230,118,0.1)" stroke="#00e676" stroke-width="1"/>
+          <text x="255" y="203" fill="#00e676" font-size="9" text-anchor="middle">Actuator</text>
+          <defs>
+            <marker id="barr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#90a4ae"/>
+            </marker>
+          </defs>
+          <text x="160" y="235" fill="#546e7a" font-size="9" text-anchor="middle">Embedded Control Loop</text>
+          <text x="160" y="252" fill="#546e7a" font-size="9" text-anchor="middle">Sense → Process → Act → Repeat</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۸ – انواع سیستم‌های عامل نهفته
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۸</div>
+    <h2>انواع سیستم‌های عامل نهفته</h2>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid cols2" style="gap:24px;">
+      <div class="card" style="border-color: rgba(0,200,255,0.3);">
+        <div class="card-icon">🐧</div>
+        <h4>سیستم‌عامل عمومی با کاربرد خاص</h4>
+        <p>سیستم‌های کامپیوتری همه‌منظوره که سیستم‌عامل استاندارد (مثل Linux) اجرا می‌کنند؛ برنامه‌های خاص‌منظوره روی آن‌ها نصب می‌شود. مانند Raspberry Pi در کاربردهای IoT.</p>
+      </div>
+      <div class="card" style="border-color: rgba(124,77,255,0.3);">
+        <div class="card-icon">⚙️</div>
+        <h4>سیستم‌عامل نهفته اختصاصی</h4>
+        <p>دستگاه‌های سخت‌افزاری با سیستم‌عامل خاص‌منظوره که دقیقاً عملکرد مورد نظر را پیاده‌سازی می‌کنند. مانند VxWorks، FreeRTOS، QNX.</p>
+      </div>
+      <div class="card" style="border-color: rgba(0,230,118,0.3);">
+        <div class="card-icon">🔬</div>
+        <h4>ASIC بدون سیستم‌عامل</h4>
+        <p>مدارات مجتمع با کاربرد خاص (Application-Specific Integrated Circuits) که وظایف خود را بدون هیچ سیستم‌عاملی انجام می‌دهند. کارایی بالا و مصرف برق بسیار پایین.</p>
+      </div>
+      <div class="card" style="border-color: rgba(255,171,64,0.3);">
+        <div class="card-icon">📡</div>
+        <h4>سیستم‌های Firmware</h4>
+        <p>برنامه‌هایی که در حافظه‌های غیرفرار (EEPROM، Flash) ذخیره می‌شوند. Bootstrap Program اولین برنامه‌ای است که پس از روشن شدن کامپیوتر اجرا می‌شود.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۹ – کاربردهای سیستم‌های نهفته
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۹</div>
+    <h2>کاربردهای واقعی سیستم‌های نهفته</h2>
+  </div>
+  <div class="slide-body">
+    <div class="two-col">
+      <div class="col-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Arduino_Uno_-_R3.jpg/1024px-Arduino_Uno_-_R3.jpg"
+             alt="Embedded system microcontroller"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div style="display:none; background:rgba(0,200,255,0.08); border-radius:12px; height:220px; justify-content:center; align-items:center; flex-direction:column; gap:10px; border:1px solid rgba(0,200,255,0.2);">
+          <span style="font-size:4em;">🔌</span>
+          <span style="color:var(--accent);">Embedded Microcontroller</span>
+        </div>
+      </div>
+      <div class="col-text">
+        <h3>حوزه‌های کاربردی</h3>
+        <ul>
+          <li>🚗 سیستم تزریق سوخت و ترمز ABS خودرو — Hard Real-Time</li>
+          <li>🏥 دستگاه‌های تصویربرداری پزشکی و مانیتورینگ بیمار</li>
+          <li>✈️ سیستم‌های کنترل پرواز و راهنمایی موشک</li>
+          <li>🏭 کنترل PLC در خطوط تولید صنعتی</li>
+          <li>🏠 خانه هوشمند: ترموستات، قفل، روشنایی هوشمند</li>
+          <li>📱 میکروکنترلرهای تلفن همراه — GPS، شتاب‌سنج</li>
+        </ul>
+        <p style="margin-top:14px; font-size:1em; color:var(--muted);">آینده: یخچال‌هایی که وقتی شیر تمام می‌شود به فروشگاه اطلاع می‌دهند!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۱۰ – مجازی‌سازی: مقدمه
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۱۰</div>
+    <h2>مجازی‌سازی (Virtualization)</h2>
+  </div>
+  <div class="slide-body center-text">
+    <p class="quote">«مجازی‌سازی فناوری‌ای است که به ما اجازه می‌دهد سخت‌افزار یک کامپیوتر را به چندین محیط اجرایی مجزا انتزاع کنیم.»</p>
+    <p>نتیجه: این وهم ایجاد می‌شود که هر محیط روی کامپیوتر خصوصی خود اجرا می‌شود.</p>
+    <div style="display:flex; gap:30px; justify-content:center; flex-wrap:wrap; margin-top:16px;">
+      <div style="background:var(--card); border:1px solid rgba(0,200,255,0.2); border-radius:10px; padding:14px 20px; text-align:center; min-width:150px;">
+        <div style="font-size:1.8em;">🖥️</div>
+        <div style="font-size:0.9em; color:var(--accent); margin-top:6px;">Emulation</div>
+        <div style="font-size:0.8em; color:var(--muted); margin-top:4px;">شبیه‌سازی CPU متفاوت — کند</div>
+      </div>
+      <div style="background:var(--card); border:1px solid rgba(124,77,255,0.3); border-radius:10px; padding:14px 20px; text-align:center; min-width:150px;">
+        <div style="font-size:1.8em;">⚡</div>
+        <div style="font-size:0.9em; color:#7c4dff; margin-top:6px;">Virtualization</div>
+        <div style="font-size:0.8em; color:var(--muted); margin-top:4px;">OS بومی در OS دیگر — سریع</div>
+      </div>
+      <div style="background:var(--card); border:1px solid rgba(0,230,118,0.2); border-radius:10px; padding:14px 20px; text-align:center; min-width:150px;">
+        <div style="font-size:1.8em;">☁️</div>
+        <div style="font-size:0.9em; color:#00e676; margin-top:6px;">Cloud</div>
+        <div style="font-size:0.8em; color:var(--muted); margin-top:4px;">VM در مقیاس ابری</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۱۱ – چگونگی کار ماشین مجازی
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۱۱</div>
+    <h2>چگونگی کار ماشین مجازی (VM)</h2>
+  </div>
+  <div class="slide-body">
+    <div class="two-col">
+      <div class="col-img">
+        <svg viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:rgba(255,255,255,0.03);border-radius:12px;padding:10px;">
+          <!-- Single OS -->
+          <text x="75" y="20" fill="#90a4ae" font-size="10" text-anchor="middle">(a) تک سیستم‌عامل</text>
+          <rect x="15" y="25" width="120" height="30" rx="5" fill="rgba(124,77,255,0.15)" stroke="#7c4dff" stroke-width="1"/>
+          <text x="75" y="44" fill="#7c4dff" font-size="8" text-anchor="middle">Processes</text>
+          <rect x="15" y="60" width="120" height="22" rx="5" fill="rgba(0,200,255,0.15)" stroke="#00c8ff" stroke-width="1"/>
+          <text x="75" y="75" fill="#00c8ff" font-size="8" text-anchor="middle">Operating System Kernel</text>
+          <rect x="15" y="87" width="120" height="20" rx="5" fill="rgba(255,171,64,0.15)" stroke="#ffab40" stroke-width="1"/>
+          <text x="75" y="101" fill="#ffab40" font-size="8" text-anchor="middle">Hardware</text>
+          <!-- VM -->
+          <text x="225" y="20" fill="#90a4ae" font-size="10" text-anchor="middle">(b) چند ماشین مجازی</text>
+          <!-- VM1 -->
+          <rect x="155" y="25" width="65" height="20" rx="4" fill="rgba(124,77,255,0.1)" stroke="#7c4dff" stroke-width="1"/>
+          <text x="187" y="38" fill="#7c4dff" font-size="7" text-anchor="middle">Procs (VM1)</text>
+          <rect x="155" y="48" width="65" height="18" rx="4" fill="rgba(0,200,255,0.1)" stroke="#00c8ff" stroke-width="1"/>
+          <text x="187" y="61" fill="#00c8ff" font-size="7" text-anchor="middle">Kernel (VM1)</text>
+          <!-- VM2 -->
+          <rect x="225" y="25" width="65" height="20" rx="4" fill="rgba(124,77,255,0.1)" stroke="#7c4dff" stroke-width="1"/>
+          <text x="257" y="38" fill="#7c4dff" font-size="7" text-anchor="middle">Procs (VM2)</text>
+          <rect x="225" y="48" width="65" height="18" rx="4" fill="rgba(0,200,255,0.1)" stroke="#00c8ff" stroke-width="1"/>
+          <text x="257" y="61" fill="#00c8ff" font-size="7" text-anchor="middle">Kernel (VM2)</text>
+          <!-- VMM -->
+          <rect x="155" y="70" width="135" height="22" rx="5" fill="rgba(0,230,118,0.15)" stroke="#00e676" stroke-width="1.5"/>
+          <text x="222" y="85" fill="#00e676" font-size="8" text-anchor="middle">Virtual Machine Manager (VMM)</text>
+          <rect x="155" y="96" width="135" height="18" rx="5" fill="rgba(255,171,64,0.15)" stroke="#ffab40" stroke-width="1"/>
+          <text x="222" y="109" fill="#ffab40" font-size="8" text-anchor="middle">Hardware</text>
+          <!-- Divider -->
+          <line x1="145" y1="15" x2="145" y2="125" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="4,3"/>
+          <!-- VMM description -->
+          <rect x="15" y="140" width="270" height="160" rx="10" fill="rgba(0,230,118,0.05)" stroke="rgba(0,230,118,0.2)" stroke-width="1"/>
+          <text x="150" y="163" fill="#00e676" font-size="10" text-anchor="middle" font-weight="bold">وظایف Virtual Machine Manager</text>
+          <text x="30" y="185" fill="#e8eaf6" font-size="9">▸ اجرای Guest OS ها</text>
+          <text x="30" y="203" fill="#e8eaf6" font-size="9">▸ مدیریت و تخصیص منابع (CPU، RAM)</text>
+          <text x="30" y="221" fill="#e8eaf6" font-size="9">▸ محافظت Guestها از یکدیگر</text>
+          <text x="30" y="239" fill="#e8eaf6" font-size="9">▸ مثال‌ها: VMware ESX، Citrix XenServer</text>
+          <text x="30" y="257" fill="#90a4ae" font-size="9">▸ VirtualBox (رایگان و متن‌باز)</text>
+          <text x="30" y="275" fill="#90a4ae" font-size="9">▸ Hyper-V (Microsoft)</text>
+        </svg>
+      </div>
+      <div class="col-text">
+        <h3>VMM — مدیر ماشین مجازی</h3>
+        <ul>
+          <li>Host OS سیستم‌عامل اصلی روی سخت‌افزار است</li>
+          <li>Guest OS سیستم‌عامل درون ماشین مجازی است</li>
+          <li>VMM منابع را مدیریت کرده و Guestها را از هم جدا نگه می‌دارد</li>
+          <li>مجازی‌سازی اولیه: IBM Mainframe برای چندکاربری</li>
+          <li>VMware: اولین VMM روی x86 — Windows در Windows</li>
+        </ul>
+        <p style="margin-top:14px;font-size:1em;color:var(--muted);">یک لپ‌تاپ macOS می‌تواند Windows 10 را به عنوان Guest اجرا کند!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۱۲ – انواع Hypervisor
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۱۲</div>
+    <h2>انواع Hypervisor (VMM)</h2>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid cols2" style="gap:28px; align-content:center;">
+      <div class="card" style="border-color:rgba(0,200,255,0.4); padding:28px;">
+        <div style="font-size:2.2em; margin-bottom:12px;">🏗️</div>
+        <h4 style="font-size:1.25em;">Type 1 — Bare-Metal Hypervisor</h4>
+        <p style="font-size:1.05em; line-height:1.8; margin-top:10px;">مستقیماً روی سخت‌افزار اجرا می‌شود؛ نیاز به Host OS ندارد. کارایی بالاتر. مناسب سرورهای enterprise.</p>
+        <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="chip">VMware ESXi</span>
+          <span class="chip">Xen</span>
+          <span class="chip">Hyper-V</span>
+          <span class="chip">KVM</span>
+        </div>
+        <div style="margin-top:14px; background:rgba(0,200,255,0.06); border-radius:8px; padding:10px; font-size:0.88em; color:var(--muted);">
+          Hardware → Hypervisor → VM1, VM2, VM3
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(124,77,255,0.4); padding:28px;">
+        <div style="font-size:2.2em; margin-bottom:12px;">💻</div>
+        <h4 style="font-size:1.25em;">Type 2 — Hosted Hypervisor</h4>
+        <p style="font-size:1.05em; line-height:1.8; margin-top:10px;">روی سیستم‌عامل موجود (Host OS) به عنوان یک برنامه اجرا می‌شود. نصب آسان‌تر. مناسب توسعه و تست.</p>
+        <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="chip">VirtualBox</span>
+          <span class="chip">VMware Workstation</span>
+          <span class="chip">Parallels</span>
+        </div>
+        <div style="margin-top:14px; background:rgba(124,77,255,0.06); border-radius:8px; padding:10px; font-size:0.88em; color:var(--muted);">
+          Hardware → Host OS → Hypervisor → VM1, VM2
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center; color:var(--muted); font-size:1em; margin-top:20px;">CPUهایی که از مجازی‌سازی پشتیبانی می‌کنند (Intel VT-x / AMD-V) دارای مد جداگانه‌ای برای VMM هستند.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۱۳ – محاسبات ابری
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۱۳</div>
+    <h2>محاسبات ابری (Cloud Computing)</h2>
+  </div>
+  <div class="slide-body">
+    <div class="two-col">
+      <div class="col-text">
+        <h3>مجازی‌سازی: قلب ابر</h3>
+        <p>محاسبات ابری به عنوان سرویس ارائه می‌شود و پایه آن مجازی‌سازی است.</p>
+        <ul>
+          <li><span class="highlight">Public Cloud:</span> در دسترس عموم (AWS, Azure, GCP)</li>
+          <li><span class="highlight">Private Cloud:</span> مخصوص یک سازمان</li>
+          <li><span class="highlight">Hybrid Cloud:</span> ترکیبی از هر دو</li>
+          <li><span class="highlight">SaaS:</span> نرم‌افزار به عنوان سرویس (Google Docs)</li>
+          <li><span class="highlight">PaaS:</span> پلتفرم به عنوان سرویس (Heroku)</li>
+          <li><span class="highlight">IaaS:</span> زیرساخت به عنوان سرویس (AWS EC2)</li>
+        </ul>
+        <p style="margin-top:12px; font-size:0.95em; color:var(--muted);">AWS EC2: هزاران سرور، میلیون‌ها VM، پتابایت‌ها ذخیره‌سازی.</p>
+      </div>
+      <div class="col-img">
+        <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:rgba(255,255,255,0.03);border-radius:12px;padding:12px;">
+          <!-- Cloud shape -->
+          <ellipse cx="150" cy="70" rx="80" ry="40" fill="rgba(0,200,255,0.15)" stroke="#00c8ff" stroke-width="1.5"/>
+          <ellipse cx="110" cy="80" rx="45" ry="28" fill="rgba(0,200,255,0.15)" stroke="#00c8ff" stroke-width="1"/>
+          <ellipse cx="195" cy="80" rx="40" ry="26" fill="rgba(0,200,255,0.15)" stroke="#00c8ff" stroke-width="1"/>
+          <text x="150" y="68" fill="#00c8ff" font-size="10" text-anchor="middle" font-weight="bold">Cloud Infrastructure</text>
+          <text x="150" y="82" fill="#90a4ae" font-size="8" text-anchor="middle">VM Cluster + Storage + Network</text>
+          <!-- Client devices -->
+          <rect x="20" y="180" width="50" height="35" rx="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <text x="45" y="201" fill="#e8eaf6" font-size="8" text-anchor="middle">🖥️ PC</text>
+          <rect x="90" y="185" width="50" height="30" rx="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <text x="115" y="204" fill="#e8eaf6" font-size="8" text-anchor="middle">💻 Laptop</text>
+          <rect x="160" y="185" width="50" height="30" rx="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <text x="185" y="204" fill="#e8eaf6" font-size="8" text-anchor="middle">📱 Mobile</text>
+          <rect x="230" y="180" width="50" height="35" rx="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <text x="255" y="201" fill="#e8eaf6" font-size="8" text-anchor="middle">⌚ IoT</text>
+          <!-- Lines -->
+          <line x1="45" y1="180" x2="120" y2="110" stroke="rgba(0,200,255,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="115" y1="185" x2="140" y2="110" stroke="rgba(0,200,255,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="185" y1="185" x2="160" y2="110" stroke="rgba(0,200,255,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="255" y1="180" x2="185" y2="110" stroke="rgba(0,200,255,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <!-- Services -->
+          <rect x="20" y="240" width="70" height="25" rx="5" fill="rgba(0,200,255,0.1)" stroke="#00c8ff" stroke-width="1"/>
+          <text x="55" y="256" fill="#00c8ff" font-size="8" text-anchor="middle">IaaS</text>
+          <rect x="115" y="240" width="70" height="25" rx="5" fill="rgba(124,77,255,0.1)" stroke="#7c4dff" stroke-width="1"/>
+          <text x="150" y="256" fill="#7c4dff" font-size="8" text-anchor="middle">PaaS</text>
+          <rect x="210" y="240" width="70" height="25" rx="5" fill="rgba(0,230,118,0.1)" stroke="#00e676" stroke-width="1"/>
+          <text x="245" y="256" fill="#00e676" font-size="8" text-anchor="middle">SaaS</text>
+          <text x="150" y="280" fill="#546e7a" font-size="8" text-anchor="middle">Internet (Firewall protected)</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۱۴ – مقایسه Embedded vs Virtual Machines
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۱۴</div>
+    <h2>مقایسه: سیستم‌های نهفته در برابر ماشین‌های مجازی</h2>
+  </div>
+  <div class="slide-body">
+    <div class="table-wrap">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>ویژگی</th>
+            <th>سیستم‌های نهفته (Embedded OS)</th>
+            <th>ماشین مجازی (Virtual Machines)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>هدف اصلی</td>
+            <td>وظایف خاص‌منظوره با محدودیت‌های سخت</td>
+            <td>ایجاد محیط‌های اجرایی مستقل</td>
+          </tr>
+          <tr>
+            <td>رابط کاربری</td>
+            <td>بسیار محدود یا هیچ</td>
+            <td>کامل — مثل یک کامپیوتر مستقل</td>
+          </tr>
+          <tr>
+            <td>محدودیت زمانی</td>
+            <td>Hard/Soft Real-Time — حیاتی</td>
+            <td>معمولاً اهمیتی ندارد</td>
+          </tr>
+          <tr>
+            <td>منابع سیستم</td>
+            <td>بسیار محدود (CPU کم، RAM کم)</td>
+            <td>به اشتراک‌گذاری منابع سخت‌افزار</td>
+          </tr>
+          <tr>
+            <td>امنیت و جداسازی</td>
+            <td>محیط بسته و اختصاصی</td>
+            <td>Isolation توسط VMM تضمین می‌شود</td>
+          </tr>
+          <tr>
+            <td>کاربرد</td>
+            <td>خودرو، پزشکی، صنعت، IoT</td>
+            <td>Data Center، آزمایش نرم‌افزار، ابر</td>
+          </tr>
+          <tr>
+            <td>مثال‌ها</td>
+            <td>FreeRTOS، VxWorks، QNX، Mbed OS</td>
+            <td>VMware، VirtualBox، Xen، Hyper-V</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     اسلاید ۱۵ – جمع‌بندی
+═══════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="num">۱۵</div>
+    <h2>جمع‌بندی</h2>
+  </div>
+  <div class="slide-body center-text">
+    <ul class="summary-list">
+      <li>سیستم‌عامل مدیر منابع سخت‌افزاری است و محیط اجرای برنامه‌ها را فراهم می‌کند</li>
+      <li>وقفه‌ها (Interrupts) روش اصلی تعامل سخت‌افزار با سیستم‌عامل هستند</li>
+      <li>معماری‌های چندپردازنده و چندهسته‌ای سیستم‌های مدرن را تشکیل می‌دهند</li>
+      <li>دو مد اجرایی (User/Kernel) از سیستم در برابر برنامه‌های خراب محافظت می‌کند</li>
+      <li>سیستم‌های نهفته رایج‌ترین کامپیوترهای دنیا هستند — در همه‌جا یافت می‌شوند</li>
+      <li>سیستم‌های بلادرنگ (RTOS) محدودیت‌های زمانی سخت دارند — تأخیر یعنی شکست</li>
+      <li>مجازی‌سازی سخت‌افزار یک کامپیوتر را به چندین محیط مستقل تقسیم می‌کند</li>
+      <li>VMM منابع را مدیریت و Guestها را از یکدیگر ایزوله می‌کند</li>
+      <li>محاسبات ابری بر پایه مجازی‌سازی ساخته شده است (IaaS, PaaS, SaaS)</li>
+      <li>آینده: تلفیق Embedded + Cloud در IoT و Edge Computing</li>
+    </ul>
+    <p style="margin-top:20px; color:var(--muted); font-size:0.95em;">منبع: Operating System Concepts | Silberschatz, Galvin, Gagne | 10th Edition | Chapter 1</p>
+  </div>
+</div>
+
+<!-- ── ناوبری ── -->
+<div class="navigation">
+  <span class="nav-btn" id="prev">← قبلی</span>
+  <span class="slide-counter" id="counter">۱ / ۱۵</span>
+  <span class="nav-btn" id="next">بعدی →</span>
+</div>
+<div class="progress-bar" id="progress"></div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const progressBar = document.getElementById('progress');
+const counter = document.getElementById('counter');
+let current = 0;
+
+const persianNums = ['۱','۲','۳','۴','۵','۶','۷','۸','۹','۱۰','۱۱','۱۲','۱۳','۱۴','۱۵'];
+
+function showSlide(index) {
+  slides.forEach((s, i) => {
+    s.style.display = 'none';
+    s.style.opacity = '0';
+    s.classList.remove('active');
+  });
+  const s = slides[index];
+  s.style.display = 'flex';
+  // Title slide needs flex column
+  s.style.flexDirection = s.classList.contains('title-slide') ? 'column' : 'column';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      s.style.opacity = '1';
+      s.classList.add('active');
+    });
+  });
+  progressBar.style.width = `${((index + 1) / slides.length) * 100}%`;
+  counter.textContent = `${persianNums[index]} / ${persianNums[slides.length - 1]}`;
+}
+
+// Init
+slides.forEach((s, i) => {
+  if (i !== 0) { s.style.display = 'none'; s.style.opacity = '0'; }
+});
+
+prevBtn.addEventListener('click', () => { if (current > 0) showSlide(--current); });
+nextBtn.addEventListener('click', () => { if (current < slides.length - 1) showSlide(++current); });
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    if (current < slides.length - 1) showSlide(++current);
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    if (current > 0) showSlide(--current);
+  }
+});
+
+// Touch swipe
+let touchX = 0;
+document.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (dx < -50 && current < slides.length - 1) showSlide(++current);
+  else if (dx > 50 && current > 0) showSlide(--current);
+});
+
+// init progress
+progressBar.style.width = `${(1 / slides.length) * 100}%`;
+</script>
+</body>
+</html>
